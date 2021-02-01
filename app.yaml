@@ -1,0 +1,15 @@
+runtime: nodejs12
+
+automatic_scaling:
+  max_idle_instances: 5
+  min_idle_instances: 1
+  max_instances: 20
+  max_concurrent_requests: 20
+
+inbound_services:
+- warmup
+
+env_variables:
+  NODE_ENV: production
+  PROJECT_ID: 217939073598
+  SECRET_ID: prod-ogx-management
