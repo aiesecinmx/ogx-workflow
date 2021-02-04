@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ParseElementorPipe should transform elementor input 1`] = `
+Object {
+  "allocation": "9a300e10-40d8-4c2e-b4f1-edb2d7010571",
+  "comments": "",
+  "email": "test@example.com",
+  "field_af8200c": "",
+  "firstName": "Test",
+  "gdpr": "",
+  "lastName": "AIESEC",
+  "password": "password123",
+  "phone": "5555555555",
+  "referral": "Soy Miembro de AIESEC",
+  "sdgs": "16",
+  "semester": "Ya me gradué",
+  "state": "27",
+  "universityMajor": "Ingenierías",
+}
+`;

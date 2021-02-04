@@ -1,8 +1,3 @@
-export interface AllocationInfo {
-  campus: string;
-  product: string;
-}
-
 export interface SignupPerson {
   firstName: string;
   lastName: string;
@@ -12,6 +7,11 @@ export interface SignupPerson {
 }
 
 export interface SignupPersonDto extends SignupPerson {
-  allocationInfo: AllocationInfo;
-  epInfo: Record<string, string>;
+  state: string;
+  allocation: string;
+  universityMajor: string;
+  semester: string;
+  referral: string;
+  sdg: string;
+  comments: string;
 }

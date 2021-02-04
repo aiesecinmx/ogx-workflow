@@ -8,6 +8,7 @@ export class JoiValidationPipe<T> implements PipeTransform {
   async transform(value: any): Promise<T> {
     try {
       await this.schema.validateAsync(value, {
+        allowUnknown: true,
         abortEarly: false,
       });
       return value;

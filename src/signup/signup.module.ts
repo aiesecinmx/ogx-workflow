@@ -10,11 +10,12 @@ import { Campus } from 'src/common/entities/campus';
 import { AllocationService } from './allocation/allocation.service';
 import { Allocation } from 'src/common/entities/allocation';
 import { Person } from 'src/common/entities/person';
+import { Product } from 'src/common/entities/product';
 
 @Module({
   imports: [
     HttpModule,
-    TypeOrmModule.forFeature([State, Campus, Allocation, Person]),
+    TypeOrmModule.forFeature([State, Campus, Allocation, Person, Product]),
   ],
   providers: [
     SignupService,
