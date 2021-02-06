@@ -1,10 +1,11 @@
-import { Logger, UnprocessableEntityException } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import Axios, { AxiosInstance } from 'axios';
 import { stringify } from 'querystring';
 import { SignupPerson } from '../../common/interfaces/signup-person.interface';
 import decamelize from 'decamelize';
 
 export class ExpaAuthService {
+  // TODO: Set dynamically to mock if it's not sent.
   private readonly basePath = 'https://auth.aiesec.org/';
   private readonly logger = new Logger(ExpaAuthService.name);
   // TODO: Setup dinamically via configuration
@@ -44,7 +45,9 @@ export class ExpaAuthService {
       return; // TODO: Return an error in processing queue?
     }
 
-    this.logger.log(`Person does not exist. Signing up into EXPA`);
+    this.logger.log(
+      `Person does not exist. Signing up into EXPA for lcId ${lcId}`
+    );
     const personToCreate = {
       ...person,
       lc: lcId,
@@ -56,7 +59,6 @@ export class ExpaAuthService {
       value,
     ]);
     const adaptedUser = Object.fromEntries(entries);
-    this.logger.log(adaptedUser);
 
     this.logger.log(`Sending request to EXPA`);
     const { data } = await this.authClient.post('/users.json', {

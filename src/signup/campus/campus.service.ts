@@ -18,6 +18,7 @@ export class CampusService {
       relations: ['university'],
       cache: true,
     });
+    // TODO: Save this transformation in the database instead?
     return campuses.map((campus) => {
       const {
         university: { shortName, name: universityName },
