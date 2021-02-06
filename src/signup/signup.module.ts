@@ -11,10 +11,11 @@ import { AllocationService } from './allocation/allocation.service';
 import { Allocation } from 'src/common/entities/allocation';
 import { Person } from 'src/common/entities/person';
 import { Product } from 'src/common/entities/product';
+import { PodioModule } from 'src/common/podio/podio.module';
 
 @Module({
   imports: [
-    HttpModule,
+    PodioModule,
     TypeOrmModule.forFeature([State, Campus, Allocation, Person, Product]),
   ],
   providers: [

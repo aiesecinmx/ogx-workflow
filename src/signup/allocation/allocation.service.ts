@@ -32,7 +32,7 @@ export class AllocationService {
 
     return this.allocationsRepository.findOne({
       where: { campus, product },
-      relations: ['entity'],
+      relations: ['entity', 'product', 'campus', 'campus.state'],
     });
   }
 }
