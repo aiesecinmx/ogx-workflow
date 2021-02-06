@@ -396,5 +396,9 @@ Temporary Items
 # Local
 .env
 dist
+.vscode
 
 ormconfig.json
+
+# Example folder
+examples/
