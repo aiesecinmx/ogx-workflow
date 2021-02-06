@@ -16,7 +16,7 @@ export class Person {
 
   @Column() firstName: string;
   @Column() lastName: string;
-  @Column() phone: string;
+  @Column({ length: 20 }) phone: string;
   @Column() email: string;
   @Column({ nullable: true }) maskedEmail?: string;
 
