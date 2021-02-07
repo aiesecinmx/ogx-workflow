@@ -41,7 +41,7 @@ export class TypeOrmOptionsService implements TypeOrmOptionsFactory {
         University,
       ],
       synchronize: false,
-      logging: true,
+      logging: process.env.NODE_ENV !== 'production',
       cache: { duration: 3600000 },
     };
   }

@@ -17,6 +17,7 @@ import { CampusService } from './campus/campus.service';
 import { AllocationService } from './allocation/allocation.service';
 import { SignupPersonDto } from 'src/common/interfaces/signup-person.interface';
 import { ParseElementorPipe } from './pipes/parse-elementor.pipe';
+import { deletePII } from 'src/common/helpers/delete-pii.helper';
 
 const SignupPersonPipe = new JoiValidationPipe(SignupPersonSchema);
 
@@ -37,6 +38,7 @@ export class SignupController {
     @Param('product') product: string,
     @Body(ParseElementorPipe, SignupPersonPipe) person: SignupPersonDto
   ) {
+    this.logger.log(`Got signup request for person: ${deletePII(person)}`);
     const campus = person.allocation;
     const allocation = campus
       ? await this.allocationService.findByCampus(campus, product)
