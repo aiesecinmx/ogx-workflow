@@ -8,7 +8,9 @@ import { ExpaEntity } from 'src/common/entities/expa-entity';
 import { Person } from 'src/common/entities/person';
 import { Product } from 'src/common/entities/product';
 import { State } from 'src/common/entities/state';
+import { StateAllocation } from 'src/common/entities/state-allocation';
 import { University } from 'src/common/entities/university';
+import { UniversityAllocation } from 'src/common/entities/university-allocation';
 
 export class TypeOrmOptionsService implements TypeOrmOptionsFactory {
   constructor(
@@ -29,6 +31,8 @@ export class TypeOrmOptionsService implements TypeOrmOptionsFactory {
       database: this.configuration.get('dbName'),
       entities: [
         Allocation,
+        StateAllocation,
+        UniversityAllocation,
         Campus,
         State,
         ExpaEntity,

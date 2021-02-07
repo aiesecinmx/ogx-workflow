@@ -6,8 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Logger,
-  NotImplementedException,
-  Optional,
   Param,
   Post,
 } from '@nestjs/common';
@@ -40,18 +38,17 @@ export class SignupController {
     @Body(ParseElementorPipe, SignupPersonPipe) person: SignupPersonDto
   ) {
     const campus = person.allocation;
-    const allocation = await this.allocationService.findByAllocationInfo(
-      campus,
-      product
-    );
+    const allocation = campus
+      ? await this.allocationService.findByCampus(campus, product)
+      : await this.allocationService.findDefaultAllocation(
+          parseInt(person.state),
+          product
+        );
 
     if (!allocation) {
-      this.logger.warn('Allocation not found');
-      throw new BadRequestException({
-        message: 'Allocation was not found for the given parameters',
-        campus,
-        product,
-      });
+      const message = 'Allocation not found for the given parameters';
+      this.logger.warn(message);
+      throw new BadRequestException({ message, campus, product });
     }
 
     return this.signupService.create(person, allocation);

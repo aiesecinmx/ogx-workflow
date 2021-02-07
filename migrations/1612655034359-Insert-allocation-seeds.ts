@@ -1,15 +1,15 @@
+import { MigrationInterface, QueryRunner } from 'typeorm';
 import { CampusesSeeds } from '../seeds/campuses.seed';
 import { UniversitiesSeed } from '../seeds/universities.seed';
 import { Campus } from '../src/common/entities/campus';
 import { State } from '../src/common/entities/state';
 import { University } from '../src/common/entities/university';
-import { MigrationInterface, QueryRunner } from 'typeorm';
 import { AllocationSeeds } from '../seeds/allocations.seed';
 import { Product } from '../src/common/entities/product';
 import { ExpaEntity } from '../src/common/entities/expa-entity';
-import { Allocation } from '../src/common/entities/allocation';
+import { UniversityAllocation } from '../src/common/entities/university-allocation';
 
-export class InsertAllocationSeeds1611067092754 implements MigrationInterface {
+export class InsertAllocationSeeds1612655034359 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.connect();
     const states = await queryRunner.connection.getRepository(State).find();
@@ -66,7 +66,9 @@ export class InsertAllocationSeeds1611067092754 implements MigrationInterface {
       ...AllocationSeeds.filter(({ campusId }) => campusId),
       ...allocationsWithMainCampus,
     ];
-    const allocationsToSave: Array<Omit<Allocation, 'id'>> = itemsToCreate
+    const allocationsToSave: Array<
+      Omit<UniversityAllocation, 'id'>
+    > = itemsToCreate
       .map((seed) =>
         Object.entries(seed.productMapping).map(
           ([productShortName, eyName]) => ({
@@ -79,14 +81,14 @@ export class InsertAllocationSeeds1611067092754 implements MigrationInterface {
       .flat();
 
     await queryRunner.connection
-      .getRepository(Allocation)
+      .getRepository(UniversityAllocation)
       .save(allocationsToSave);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.connect();
 
-    await queryRunner.connection.getRepository(Allocation).delete({});
+    await queryRunner.connection.getRepository(UniversityAllocation).delete({});
     await queryRunner.connection.getRepository(Campus).delete({});
     await queryRunner.connection.getRepository(University).delete({});
   }

@@ -13,4 +13,8 @@ export class StateService {
   findAll() {
     return this.statesRepository.find({ cache: true });
   }
+
+  findByName(name: string) {
+    return this.statesRepository.findOne({ name });
+  }
 }

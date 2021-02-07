@@ -2,6 +2,8 @@ import { Logger } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { ExpaProduct } from 'src/signup/types';
 import { Person } from '../entities/person';
+import { StateAllocation } from '../entities/state-allocation';
+import { UniversityAllocation } from '../entities/university-allocation';
 import {
   PODIO_ENTITIES,
   PODIO_REFERRALS,
@@ -37,8 +39,14 @@ export class PodioProductService {
   }
 
   private createUserFields(user: Person) {
-    const entityName = user.allocation?.entity?.name;
-    const stateName = user.allocation?.campus?.state?.name;
+    const { allocation } = user;
+    const entityName = allocation?.entity?.name;
+    let stateName = null;
+    if (allocation instanceof UniversityAllocation) {
+      stateName = allocation?.campus?.state?.name;
+    } else if (allocation instanceof StateAllocation) {
+      stateName = allocation?.state?.name;
+    }
     this.logger.log(
       `Creating signup person with entity ${entityName} and state ${stateName}`
     );

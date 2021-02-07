@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Campus } from './campus';
+import { StateAllocation } from './state-allocation';
 
 @Entity()
 export class State {
@@ -9,4 +10,7 @@ export class State {
 
   @OneToMany(() => Campus, ({ state }) => state)
   campuses: Campus[];
+
+  @OneToMany(() => StateAllocation, ({ state }) => state)
+  defaultAllocations: StateAllocation[];
 }

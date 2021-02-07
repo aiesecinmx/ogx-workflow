@@ -15,7 +15,7 @@ export const SignupPersonSchema = Joi.object<SignupPersonDto>({
   state: Joi.string()
     .pattern(/^[0-9]+$/, 'numbers')
     .required(),
-  allocation: Joi.string().uuid({ version: 'uuidv4' }),
+  allocation: Joi.string().uuid({ version: 'uuidv4' }).allow(''),
   universityMajor: Joi.string().valid(...MAJORS),
   semester: Joi.string().required(),
   referral: Joi.string().required(), // TODO: Further validation
