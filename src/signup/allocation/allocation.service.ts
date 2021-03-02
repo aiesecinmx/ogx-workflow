@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StateAllocation } from 'src/common/entities/state-allocation';
 import { UniversityAllocation } from 'src/common/entities/university-allocation';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { ExpaProduct } from '../types';
 
 @Injectable()
@@ -21,10 +21,10 @@ export class AllocationService {
     if (!product) return;
 
     this.logger.log(
-      `Querying allocation for state ${campus} and product ${productShortName}`
+      `Querying active allocation for campus ${campus} and product ${productShortName}`
     );
     return this.universityAllocationsRepository.findOne({
-      where: { campus, product },
+      where: { campus, product, effectiveEnd: IsNull() },
       relations: ['entity', 'product'],
     });
   }
@@ -37,7 +37,7 @@ export class AllocationService {
       `Querying allocation for state ${state} and product ${productShortName}`
     );
     return this.stateAllocationsRepository.findOne({
-      where: { state, product },
+      where: { state, product, effectiveEnd: IsNull() },
       relations: ['entity', 'product', 'state'],
     });
   }

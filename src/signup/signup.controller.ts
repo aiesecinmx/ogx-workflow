@@ -38,7 +38,9 @@ export class SignupController {
     @Param('product') product: string,
     @Body(ParseElementorPipe, SignupPersonPipe) person: SignupPersonDto
   ) {
-    this.logger.log(`Got signup request for person: ${deletePII(person)}`);
+    this.logger.log(
+      `Got signup request for person: ${JSON.stringify(deletePII(person))}`
+    );
     const campus = person.allocation;
     const allocation = campus
       ? await this.allocationService.findByCampus(campus, product)
@@ -48,9 +50,11 @@ export class SignupController {
         );
 
     if (!allocation) {
-      const message = 'Allocation not found for the given parameters';
+      const message = 'Active allocation not found for the given parameters';
       this.logger.warn(message);
       throw new BadRequestException({ message, campus, product });
+    } else {
+      this.logger.log(`Found allocation with id ${allocation.id}`);
     }
 
     return this.signupService.create(person, allocation);

@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Campus } from 'src/common/entities/campus';
+import { UniversityAllocation } from 'src/common/entities/university-allocation';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -9,12 +10,27 @@ export class CampusService {
 
   constructor(
     @InjectRepository(Campus)
-    private readonly campusesRepository: Repository<Campus>
+    private readonly campusesRepository: Repository<Campus>,
+    @InjectRepository(UniversityAllocation)
+    private readonly allocationsRepository: Repository<UniversityAllocation>
   ) {}
 
   async findByStateId(state: string) {
-    const campuses = await this.campusesRepository.find({
-      where: { state },
+    // TODO: Extract this logic to a custom repository
+    this.logger.debug(`Finding valid campuses for state ${state}`);
+    const validCampuses = await this.allocationsRepository
+      .createQueryBuilder('allocation')
+      .select('campus.id as id')
+      .innerJoin('allocation.campus', 'campus', 'campus.state = :id', {
+        id: parseInt(state),
+      })
+      .where('allocation.effectiveEnd is null')
+      .groupBy('campus.id')
+      .getRawMany()
+      .then((rawCampuses) => rawCampuses.map(({ id }) => id));
+    this.logger.debug(validCampuses);
+
+    const campuses = await this.campusesRepository.findByIds(validCampuses, {
       relations: ['university'],
       cache: true,
     });

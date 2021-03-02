@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   Generated,
@@ -17,6 +18,9 @@ export class Allocation {
 
   @ManyToOne(() => Product) product: Product;
   @ManyToOne(() => ExpaEntity) entity: ExpaEntity;
+
+  @Column() effectiveStart: Date;
+  @Column({ nullable: true }) effectiveEnd: Date = null;
 
   @CreateDateColumn() createdAt?: Date;
   @UpdateDateColumn() updatedAt?: Date;

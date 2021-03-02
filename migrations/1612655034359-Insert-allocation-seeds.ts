@@ -67,7 +67,7 @@ export class InsertAllocationSeeds1612655034359 implements MigrationInterface {
       ...allocationsWithMainCampus,
     ];
     const allocationsToSave: Array<
-      Omit<UniversityAllocation, 'id'>
+      Pick<UniversityAllocation, 'entity' | 'campus' | 'product'>
     > = itemsToCreate
       .map((seed) =>
         Object.entries(seed.productMapping).map(
