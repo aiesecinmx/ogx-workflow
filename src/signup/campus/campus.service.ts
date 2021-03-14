@@ -35,25 +35,27 @@ export class CampusService {
       cache: true,
     });
     // TODO: Save this transformation in the database instead?
-    return campuses.map((campus) => {
-      const {
-        university: { shortName, name: universityName },
-        isMainCampus,
-        id,
-      } = campus;
-      let campusName = shortName
-        ? `${shortName} - ${universityName}`
-        : universityName;
+    return campuses
+      .map((campus) => {
+        const {
+          university: { shortName, name: universityName },
+          isMainCampus,
+          id,
+        } = campus;
+        let campusName = shortName
+          ? `${shortName} - ${universityName}`
+          : universityName;
 
-      if (isMainCampus) return { id, campusName };
+        if (isMainCampus) return { id, campusName };
 
-      const { prefix, name, denomination } = campus;
-      campusName += ' (';
-      campusName += denomination
-        ? denomination
-        : `${prefix || 'Campus'} ${name}`;
-      campusName += ')';
-      return { id, campusName };
-    });
+        const { prefix, name, denomination } = campus;
+        campusName += ' (';
+        campusName += denomination
+          ? denomination
+          : `${prefix || 'Campus'} ${name}`;
+        campusName += ')';
+        return { id, campusName };
+      })
+      .sort((a, b) => a.campusName.localeCompare(b.campusName));
   }
 }
