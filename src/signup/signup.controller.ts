@@ -42,12 +42,13 @@ export class SignupController {
       `Got signup request for person: ${JSON.stringify(deletePII(person))}`
     );
     const campus = person.allocation;
-    const allocation = campus
-      ? await this.allocationService.findByCampus(campus, product)
-      : await this.allocationService.findDefaultAllocation(
-          parseInt(person.state),
-          product
-        );
+    const allocation =
+      campus && campus !== 'undefined'
+        ? await this.allocationService.findByCampus(campus, product)
+        : await this.allocationService.findDefaultAllocation(
+            parseInt(person.state),
+            product
+          );
 
     if (!allocation) {
       const message = 'Active allocation not found for the given parameters';
