@@ -67,7 +67,7 @@ export const PODIO_ENTITIES = {
   Sinaloa: 776653590,
   Sonora: 776653591,
   Tabasco: 776653592,
-  Tampico: 776653594,
+  Tamaulipas: 776653594,
   Tijuana: 776653595,
   UAEMEX: 776653597,
   UDEM: 776653598,
