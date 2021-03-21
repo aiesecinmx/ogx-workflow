@@ -1,10 +1,11 @@
 runtime: nodejs12
 
 automatic_scaling:
-  max_idle_instances: 5
-  min_idle_instances: 1
-  max_instances: 20
-  max_concurrent_requests: 20
+  min_instances: 1
+  max_instances: 5
+  target_cpu_utilization: 0.8
+  target_throughput_utilization: 0.8
+  max_concurrent_requests: 40
 
 inbound_services:
 - warmup
