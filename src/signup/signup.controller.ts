@@ -18,6 +18,8 @@ import { AllocationService } from './allocation/allocation.service';
 import { SignupPersonDto } from 'src/common/interfaces/signup-person.interface';
 import { ParseElementorPipe } from './pipes/parse-elementor.pipe';
 import { deletePII } from 'src/common/helpers/delete-pii.helper';
+import { StateDto } from './interfaces/state.dto';
+import { validate as isUuid } from 'uuid';
 
 const SignupPersonPipe = new JoiValidationPipe(SignupPersonSchema);
 
@@ -41,22 +43,21 @@ export class SignupController {
     this.logger.log(
       `Got signup request for person: ${JSON.stringify(deletePII(person))}`
     );
-    const campus = person.allocation;
-    const allocation =
-      campus && campus !== 'undefined'
-        ? await this.allocationService.findByCampus(campus, product)
-        : await this.allocationService.findDefaultAllocation(
-            parseInt(person.state),
-            product
-          );
+    const campusField = person.allocation;
+    const allocation = isUuid(campusField)
+      ? await this.allocationService.findByCampus(campusField, product)
+      : await this.allocationService.findDefaultAllocation(
+          parseInt(person.state),
+          product,
+          campusField
+        );
 
     if (!allocation) {
       const message = 'Active allocation not found for the given parameters';
       this.logger.warn(message);
-      throw new BadRequestException({ message, campus, product });
-    } else {
-      this.logger.log(`Found allocation with id ${allocation.id}`);
+      throw new BadRequestException({ message, campus: campusField, product });
     }
+    this.logger.log(`Found allocation with id ${allocation.id}`);
 
     return this.signupService.create(person, allocation);
   }
@@ -69,5 +70,16 @@ export class SignupController {
   @Get('states/:id/campuses')
   async getCampusesByState(@Param('id') stateId: string) {
     return this.campusService.findByStateId(stateId);
+  }
+
+  @Get('states/:id')
+  async getStateInformation(@Param('id') stateId: string): Promise<StateDto> {
+    return {
+      id: stateId,
+      campuses: await this.campusService.findByStateId(stateId),
+      stateAllocations: await this.allocationService.listDefaultAllocations(
+        stateId
+      ),
+    };
   }
 }
