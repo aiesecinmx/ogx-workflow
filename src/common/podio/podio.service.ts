@@ -1,5 +1,7 @@
-import { HttpService, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { PodioTokenService } from './services/podio-token.service';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class PodioService {
@@ -27,12 +29,12 @@ export class PodioService {
   }
 
   private async makePostRequest(path: string, data: any) {
-    return this.httpService
-      .post(`${this.baseUrl}/${path}`, data, {
+    return lastValueFrom(
+      this.httpService.post(`${this.baseUrl}/${path}`, data, {
         headers: {
           Authorization: `OAuth2 ${await this.tokenService.getAccessToken()}`,
         },
       })
-      .toPromise();
+    );
   }
 }

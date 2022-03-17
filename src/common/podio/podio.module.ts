@@ -1,4 +1,4 @@
-import { HttpModule, HttpService, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ExpaProduct } from 'src/signup/types';
 import { ConfigurationModule } from '../configuration/configuration.module';
 import {
@@ -10,6 +10,7 @@ import { PodioProductServiceFactory } from './factories/podio-product-service.fa
 import { PodioConfiguration } from './podio.configuration';
 import { PodioService } from './podio.service';
 import { PodioTokenService } from './services/podio-token.service';
+import { HttpModule, HttpService } from '@nestjs/axios';
 
 @Module({
   imports: [ConfigurationModule, HttpModule],

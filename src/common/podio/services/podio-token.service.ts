@@ -1,7 +1,9 @@
-import { HttpService, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import qs from 'qs';
 import { isPodioTokenResponse } from '../helpers/is-podio-token-response.helper';
 import { PodioTokenResponse } from '../interfaces/podio-token-response.interface';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
 const ACCESS_TOKEN = 'accessToken';
 const REFRESH_TOKEN = 'refreshToken';
@@ -63,8 +65,8 @@ export class PodioTokenService {
 
     let data;
     try {
-      const response = await this.httpService
-        .post<PodioTokenResponse>(
+      const response = await lastValueFrom(
+        this.httpService.post<PodioTokenResponse>(
           this.podioAuthUrl,
           qs.stringify({
             grant_type: 'app',
@@ -74,7 +76,7 @@ export class PodioTokenService {
             app_token: this.appToken,
           })
         )
-        .toPromise();
+      );
       ({ data } = response);
     } catch (error) {
       this.logger.error('Failed to retrieve token');

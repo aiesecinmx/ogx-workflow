@@ -1,4 +1,4 @@
-import { HttpService } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { ExpaProduct } from 'src/signup/types';
 import { PodioProductService } from '../podio-product.service';
 import { PodioConfiguration } from '../podio.configuration';
