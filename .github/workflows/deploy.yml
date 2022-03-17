@@ -1,0 +1,32 @@
+on: push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Adds "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Authenticate Google SDK
+      uses: google-github-actions/auth@v0
+      with:
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDP }}
+        service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+    - name: Set-up Google SDK
+      uses: google-github-actions/setup-gcloud@v0
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Prune non-prod deps
+      run: npm prune --production
+
+    - name: Use gcloud CLI
+      run: gcloud info
