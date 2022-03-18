@@ -10,6 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - run: npm ci
+
+    - name: Build
+      run: npm run build
+
     - name: Authenticate Google SDK
       uses: google-github-actions/auth@v0
       with:
@@ -19,14 +24,5 @@ jobs:
     - name: Set-up Google SDK
       uses: google-github-actions/setup-gcloud@v0
 
-    - name: Install Dependencies
-      run: npm ci
-
-    - name: Build
-      run: npm run build
-
-    - name: Prune non-prod deps
-      run: npm prune --production
-
-    - name: Use gcloud CLI
-      run: gcloud info
+    - name: Deploy to App Engine
+      run: gcloud app deploy -q
