@@ -20,3 +20,6 @@ migrations/
 
 # Node.js dependencies:
 node_modules/
+
+# GitHub Workflows
+.github/
