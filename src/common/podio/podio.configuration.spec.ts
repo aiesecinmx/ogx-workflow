@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PodioConfiguration } from './podio.configuration';
 
-describe('PodioConfiguration', () => {
+describe.skip('PodioConfiguration', () => {
   let provider: PodioConfiguration;
 
   beforeEach(async () => {
